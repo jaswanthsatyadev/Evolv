@@ -2,90 +2,107 @@
 "use server";
 
 import { z } from "zod";
-import { db } from "./firebase";
-import { collection, addDoc, getDocs, query, orderBy, doc, deleteDoc, getDoc } from "firebase/firestore";
+import fs from "fs/promises";
+import path from "path";
 
 const inquirySchema = z.object({
-  name: z.string().min(2),
-  company: z.string().min(2),
-  whatsapp: z.string().min(10),
+  name: z.string().min(2, "Name must be at least 2 characters."),
+  company: z.string().min(2, "Company name must be at least 2 characters."),
+  whatsapp: z.string().min(10, "Please enter a valid WhatsApp number."),
   email: z.string().email().optional().or(z.literal('')),
   service: z.enum(["ai-image", "web-scraping", "custom"]),
   customService: z.string().optional(),
   message: z.string().optional(),
 });
 
-// This is the type for data coming from the form
 export type InquiryFormData = z.infer<typeof inquirySchema>;
 
-// This is the type for data stored in and retrieved from Firestore
 export type Inquiry = InquiryFormData & {
   id: string;
-  submittedAt: string; // Stored as ISO string
+  submittedAt: string;
 };
 
+const submissionsPath = path.join(process.cwd(), 'submissions.json');
 
-export async function submitInquiry(data: unknown) {
+async function readSubmissions(): Promise<Inquiry[]> {
+  try {
+    const data = await fs.readFile(submissionsPath, 'utf-8');
+    return JSON.parse(data);
+  } catch (error: any) {
+    if (error.code === 'ENOENT') {
+      // If the file doesn't exist, return an empty array.
+      return [];
+    }
+    console.error("Failed to read submissions file:", error);
+    throw new Error("Could not read submissions.");
+  }
+}
+
+async function writeSubmissions(data: Inquiry[]): Promise<void> {
+  try {
+    await fs.writeFile(submissionsPath, JSON.stringify(data, null, 2), 'utf-8');
+  } catch (error) {
+    console.error("Failed to write to submissions file:", error);
+    throw new Error("Could not save submission.");
+  }
+}
+
+export async function submitInquiry(data: InquiryFormData) {
   const parsedData = inquirySchema.safeParse(data);
 
   if (!parsedData.success) {
     console.error("Invalid form data:", parsedData.error.flatten());
-    // Throw an error to be caught by the client-side form handler
     throw new Error("Invalid form data.");
   }
 
   try {
-    const docRef = await addDoc(collection(db, "inquiries"), {
-        ...parsedData.data,
-        submittedAt: new Date().toISOString(),
-    });
-    console.log("Document written with ID: ", docRef.id);
+    const submissions = await readSubmissions();
+    const newInquiry: Inquiry = {
+      ...parsedData.data,
+      id: new Date().toISOString() + Math.random().toString(36).substr(2, 9),
+      submittedAt: new Date().toISOString(),
+    };
+    submissions.unshift(newInquiry); // Add to the beginning
+    await writeSubmissions(submissions);
+
     return { success: true, message: "Inquiry submitted successfully." };
-  } catch (e) {
-    console.error("Error adding document: ", e);
-    // Re-throw the error to be caught by the client
-    throw new Error("Failed to submit inquiry.");
+  } catch (error) {
+    console.error("Error during form submission process:", error);
+    // This will be caught by the form's try-catch block
+    throw new Error("Failed to submit inquiry due to a server error.");
   }
 }
 
-
 export async function getInquiries(): Promise<Inquiry[]> {
-    try {
-        const inquiriesCol = collection(db, "inquiries");
-        const q = query(inquiriesCol, orderBy("submittedAt", "desc"));
-        const inquirySnapshot = await getDocs(q);
-        const inquiryList = inquirySnapshot.docs.map(doc => {
-            const data = doc.data();
-            return {
-                id: doc.id,
-                ...data,
-                 // Ensure submittedAt is always a string, even if nullish in DB
-                submittedAt: data.submittedAt || new Date().toISOString(),
-            } as Inquiry;
-        });
-        return inquiryList;
-    } catch(error) {
-        console.error("Failed to fetch inquiries:", error);
-        throw new Error("Failed to fetch inquiries.");
-    }
+  try {
+    const submissions = await readSubmissions();
+    // Sort by date, newest first
+    return submissions.sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime());
+  } catch (error) {
+    console.error("Error fetching inquiries:", error);
+    return []; // Return empty array on error
+  }
 }
 
 export async function deleteInquiry(id: string) {
-    try {
-        if (!id) {
-            throw new Error("No ID provided for deletion.");
-        }
-        const docRef = doc(db, "inquiries", id);
-        const docSnap = await getDoc(docRef);
+    if (!id) {
+        throw new Error("No ID provided for deletion.");
+    }
 
-        if (!docSnap.exists()) {
+    try {
+        let submissions = await readSubmissions();
+        const initialLength = submissions.length;
+        
+        submissions = submissions.filter(inq => inq.id !== id);
+
+        if (submissions.length === initialLength) {
              throw new Error("Inquiry not found for deletion.");
         }
 
-        await deleteDoc(docRef);
+        await writeSubmissions(submissions);
         return { success: true, message: "Inquiry deleted." };
-    } catch (error) {
-        console.error("Error deleting document:", error);
-        throw new Error("Could not delete the inquiry.");
+    } catch (error: any) {
+        console.error("Error deleting inquiry:", error);
+        throw new Error(error.message || "Could not delete the inquiry.");
     }
 }
