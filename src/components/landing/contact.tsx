@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ContactForm } from "./contact-form";
-import { Mail, Phone } from "lucide-react";
+import { Mail } from "lucide-react";
+import { Whatsapp } from "../icons";
 
 export function Contact() {
   return (
@@ -19,8 +20,8 @@ export function Contact() {
             </p>
             <div className="space-y-4">
               <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-accent" />
-                <a href="https://wa.me/919392628795" target="_blank" className="text-lg text-muted-foreground hover:text-accent-foreground transition-colors">+91 9392628795</a>
+                <Whatsapp className="w-5 h-5 text-accent" />
+                <a href="https://wa.me/919392628795" target="_blank" className="text-lg text-muted-foreground hover:text-accent-foreground transition-colors">Chat on WhatsApp</a>
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-accent" />
