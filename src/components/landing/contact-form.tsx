@@ -121,8 +121,10 @@ export function ContactForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     try {
-        const fullWhatsapp = `${values.countryCode}${values.whatsapp}`;
-        const submissionData = { ...values, whatsapp: fullWhatsapp };
+        const submissionData = { 
+            ...values, 
+            whatsapp: `${values.countryCode}${values.whatsapp}` 
+        };
 
       await submitInquiry(submissionData);
       toast({
