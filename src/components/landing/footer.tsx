@@ -10,9 +10,7 @@ export function Footer() {
           <Logo className="h-10 w-auto" />
         </Link>
         <div className="text-sm text-muted-foreground text-center md:text-left">
-          <Link href="/admin" className="cursor-pointer hover:text-accent-foreground transition-colors">
             &copy; {new Date().getFullYear()} Evolv AI Agency. All rights reserved. 
-          </Link>
           <br/> Founded in Hyderabad, India by Jaswanth Satya Dev.
         </div>
         <nav className="flex gap-4 sm:gap-6">
@@ -43,6 +41,13 @@ export function Footer() {
             prefetch={false}
           >
             FAQs
+          </Link>
+           <Link
+            href="/admin"
+            className="text-sm hover:text-accent underline-offset-4 text-muted-foreground transition-colors"
+            prefetch={false}
+          >
+            Admin
           </Link>
         </nav>
       </div>
