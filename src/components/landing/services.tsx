@@ -60,7 +60,15 @@ const servicesData = [
             { title: "Custom Solutions", description: "Scrapers built for your specific needs." },
             { title: "Competitive Pricing", description: "Quality results at cheaper/competitive prices." },
         ],
-        whatWeCanDo: "We extract data from websites, APIs, and documents, providing it in a structured format like CSV, JSON, or directly into your database."
+        whatWeCanDo: "We extract data from websites, APIs, and documents, providing it in a structured format like CSV, JSON, or directly into your database.",
+        pricing: [
+            {
+                type: "Data Extraction",
+                priceRange: "1 - 5",
+                unit: "data row/lead",
+                description: "Pricing varies based on complexity and data source."
+            }
+        ]
     }
   },
   {
@@ -225,15 +233,27 @@ export function Services() {
                             {selectedService.detailedInfo.pricing.map((tier, index) => (
                                 <div key={index} className="bg-secondary/50 p-6 rounded-lg border border-accent/20 flex flex-col">
                                     <h4 className="text-lg font-bold text-foreground mb-2">{tier.type}</h4>
-                                    <div className="flex items-baseline gap-2 mb-3">
-                                        <span className="text-3xl font-bold text-accent">₹{tier.discountedPrice}</span>
-                                        <span className="text-lg line-through text-muted-foreground">₹{tier.originalPrice}</span>
-                                        <span className="text-sm text-muted-foreground">/ image</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 text-yellow-400 mb-4">
-                                        <Flame className="h-5 w-5"/>
-                                        <span className="font-bold">50% OFF Right Now!</span>
-                                    </div>
+                                    {tier.discountedPrice ? (
+                                        <>
+                                            <div className="flex items-baseline gap-2 mb-3">
+                                                <span className="text-3xl font-bold text-accent">₹{tier.discountedPrice}</span>
+                                                <span className="text-lg line-through text-muted-foreground">₹{tier.originalPrice}</span>
+                                                <span className="text-sm text-muted-foreground">/ image</span>
+                                            </div>
+                                            <div className="flex items-center gap-2 text-yellow-400 mb-4">
+                                                <Flame className="h-5 w-5"/>
+                                                <span className="font-bold">50% OFF Right Now!</span>
+                                            </div>
+                                        </>
+                                    ) : tier.priceRange ? (
+                                        <>
+                                            <div className="flex items-baseline gap-2 mb-3">
+                                                <span className="text-3xl font-bold text-accent">₹{tier.priceRange}</span>
+                                                <span className="text-sm text-muted-foreground">/ {tier.unit}</span>
+                                            </div>
+                                             <p className="text-sm text-accent mb-4">Contact us for an exact quote based on your needs.</p>
+                                        </>
+                                    ) : null}
                                     <p className="text-muted-foreground text-sm flex-grow">{tier.description}</p>
                                 </div>
                             ))}
