@@ -71,10 +71,10 @@ export default function AdminPage() {
     }
   };
 
-  const handleDelete = async (submittedAt: string) => {
+  const handleDelete = async (id: string) => {
     try {
-      await deleteInquiry(submittedAt);
-      setInquiries(inquiries.filter(inq => inq.submittedAt !== submittedAt));
+      await deleteInquiry(id);
+      setInquiries(inquiries.filter(inq => inq.id !== id));
       toast({
         title: "Inquiry Deleted",
         description: "The inquiry has been successfully removed.",
@@ -160,8 +160,8 @@ export default function AdminPage() {
                 </TableHeader>
                 <TableBody>
                   {inquiries.length > 0 ? (
-                    inquiries.map((inquiry, index) => (
-                      <TableRow key={index}>
+                    inquiries.map((inquiry) => (
+                      <TableRow key={inquiry.id}>
                         <TableCell className="whitespace-nowrap text-muted-foreground">
                             {new Date(inquiry.submittedAt).toLocaleDateString()}
                             <br/>
@@ -197,7 +197,7 @@ export default function AdminPage() {
                               <AlertDialogFooter>
                                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                                 <AlertDialogAction
-                                  onClick={() => handleDelete(inquiry.submittedAt)}
+                                  onClick={() => handleDelete(inquiry.id)}
                                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                                 >
                                   Delete
