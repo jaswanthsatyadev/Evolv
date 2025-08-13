@@ -7,7 +7,7 @@ export function Contact() {
     <section id="contact" className="w-full py-12 md:py-24 lg:py-32 bg-[#121212]">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid gap-12 lg:grid-cols-5 lg:gap-16">
-          <div className="space-y-6 lg:col-span-2">
+          <div className="space-y-6 lg:col-span-2 opacity-0 animate-fade-in-up">
             <div className="inline-block rounded-lg bg-accent/10 px-3 py-1 text-sm text-accent font-medium">
                 Contact Us
             </div>
@@ -29,7 +29,7 @@ export function Contact() {
             </div>
           </div>
 
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-3 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
             <Card className="border-accent/20 shadow-xl">
                 <CardHeader>
                     <CardTitle className="text-2xl font-headline">Inquiry Form</CardTitle>

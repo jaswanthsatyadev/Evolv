@@ -6,7 +6,7 @@ export function About() {
     <section id="about" className="w-full py-12 md:py-24 lg:py-32 bg-secondary">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-24">
-          <div className="space-y-6">
+          <div className="space-y-6 opacity-0 animate-fade-in-up">
             <div className="inline-block rounded-lg bg-accent/10 px-3 py-1 text-sm text-accent font-medium">
               About Evolv
             </div>
@@ -20,7 +20,7 @@ export function About() {
               Founded in Hyderabad, India, by Jaswanth Satya Dev, our mission is to fuse cutting-edge technology with creative intelligence. We aim to build bespoke, powerful AI solutions that are not only effective but also accessible, giving you the competitive edge you need to thrive in the digital age.
             </p>
           </div>
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center opacity-0 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
             <Card className="overflow-hidden rounded-xl shadow-2xl w-full max-w-md border-accent/20">
               <Image
                 src="https://placehold.co/600x600.png"
