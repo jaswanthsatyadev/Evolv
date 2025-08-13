@@ -15,7 +15,7 @@ export function Hero() {
               </span>
             </h1>
             <p className="mt-6 max-w-3xl mx-auto text-muted-foreground md:text-xl">
-              Evolv empowers businesses and startups with <strong>cutting-edge AI and automation</strong>, turning ideas into impactful results faster than ever. We blend smart technology with creative execution to help brands skip the old way and embrace the future.
+              Evolv empowers businesses and startups with <strong>cutting-edge AI and Automation technologies</strong>. We blend smart technology with creative execution to help brands skip the old way and embrace the future.
             </p>
           </div>
           <div className="flex flex-col gap-4 min-[400px]:flex-row justify-center">
