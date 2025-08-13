@@ -65,7 +65,7 @@ const servicesData = [
   {
     id: "chatbots",
     icon: <Bot className="h-10 w-10 text-muted-foreground" />,
-    title: "Whatsapp & Website Chatbots",
+    title: "Website & Whatsapp Chatbots",
     description: "Integrate AI chatbots into your business, replacing human interaction and automating user engagement 24/7.",
     details: ["Coming Soon"],
     popular: false,
@@ -266,5 +266,3 @@ export function Services() {
     </>
   );
 }
-
-    
