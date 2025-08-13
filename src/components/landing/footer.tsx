@@ -6,7 +6,7 @@ export function Footer() {
     <footer className="w-full border-t border-border/40 py-8 bg-secondary">
       <div className="container mx-auto flex flex-col items-center justify-between gap-6 px-4 md:flex-row md:px-6">
         <Link href="#" className="flex items-center gap-2" prefetch={false}>
-          <Logo className="h-8 w-auto" />
+          <Logo className="h-10 w-auto" />
         </Link>
         <p className="text-sm text-muted-foreground text-center md:text-left">
           &copy; {new Date().getFullYear()} Evolv AI Agency. All rights reserved. <br/> Founded in Hyderabad, India by Jaswanth Satya Dev.
