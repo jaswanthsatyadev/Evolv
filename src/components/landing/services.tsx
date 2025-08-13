@@ -3,16 +3,17 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Cpu, Image, SearchCode, Star, ArrowRight, Flame, Bot, Code, Phone } from "lucide-react";
+import { Cpu, Image as ImageIcon, SearchCode, Star, ArrowRight, Flame, Bot, Code, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const servicesData = [
   {
     id: "ai-image",
-    icon: <Image className="h-10 w-10 text-accent" />,
+    icon: <ImageIcon className="h-10 w-10 text-accent" />,
     title: "Model Anything",
     description: "Transform your apparel photos. We use custom AI to place your clothing on models, saving you time and money on photoshoots.",
     details: ["₹10 per image", "1-2 day turnaround", "High-quality results"],
@@ -244,8 +245,15 @@ export function Services() {
                 {selectedService.id === 'ai-image' && (
                   <div>
                     <h3 className="text-xl font-bold font-headline mb-3">Before & After</h3>
-                    <div className="text-center text-muted-foreground p-8 bg-secondary/50 rounded-lg">
-                      <p>Example images coming soon!</p>
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rounded-lg overflow-hidden border border-accent/20 p-4 bg-secondary/30">
+                      <div className="space-y-2">
+                        <Badge variant="secondary">Before</Badge>
+                        <Image src="/before.png" alt="Before AI processing" width={500} height={750} className="rounded-lg object-cover aspect-[2/3] border" />
+                      </div>
+                      <div className="space-y-2">
+                        <Badge variant="default" className="bg-accent text-accent-foreground">After</Badge>
+                        <Image src="/after.png" alt="After AI processing" width={500} height={750} className="rounded-lg object-cover aspect-[2/3] border" />
+                      </div>
                     </div>
                   </div>
                 )}
