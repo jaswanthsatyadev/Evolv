@@ -44,6 +44,7 @@ const servicesData = [
             { title: "Accurate Data", description: "Get clean, structured, and reliable data." },
             { title: "Save Time", description: "Automate manual data gathering processes." },
             { title: "Custom Solutions", description: "Scrapers built for your specific needs." },
+            { title: "Competitive Pricing", description: "Quality results at cheaper/competitive prices." },
         ],
         whatWeCanDo: "We extract data from websites, APIs, and documents, providing it in a structured format like CSV, JSON, or directly into your database."
     }
