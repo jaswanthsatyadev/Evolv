@@ -14,8 +14,8 @@ export function Hero() {
                 Evolv the New Way.
               </span>
             </h1>
-            <p className="mt-6 max-w-2xl mx-auto text-muted-foreground md:text-xl">
-              From stunning AI-generated visuals to intelligent web scraping and automation, we provide the custom AI solutions your business needs to innovate and excel.
+            <p className="mt-6 max-w-3xl mx-auto text-muted-foreground md:text-xl">
+              Evolv empowers businesses and startups with <strong>cutting-edge AI and automation</strong>, turning ideas into impactful results faster than ever. We blend smart technology with creative execution to help brands skip the old way and embrace the future.
             </p>
           </div>
           <div className="flex flex-col gap-4 min-[400px]:flex-row justify-center">
