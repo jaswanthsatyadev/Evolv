@@ -24,8 +24,11 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { submitInquiry } from "@/lib/actions";
-import { Loader2 } from "lucide-react";
+import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
 import React from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -52,51 +55,52 @@ const formSchema = z.object({
 });
 
 const countryCodes = [
-    { value: "+91", label: "IN (+91)" },
-    { value: "+1", label: "US (+1)" },
-    { value: "+1", label: "CA (+1)" },
-    { value: "+44", label: "UK (+44)" },
-    { value: "+61", label: "AU (+61)" },
-    { value: "+64", label: "NZ (+64)" },
-    { value: "+49", label: "DE (+49)" },
-    { value: "+33", label: "FR (+33)" },
-    { value: "+39", label: "IT (+39)" },
-    { value: "+34", label: "ES (+34)" },
-    { value: "+31", label: "NL (+31)" },
-    { value: "+46", label: "SE (+46)" },
-    { value: "+47", label: "NO (+47)" },
-    { value: "+45", label: "DK (+45)" },
-    { value: "+41", label: "CH (+41)" },
-    { value: "+65", label: "SG (+65)" },
-    { value: "+81", label: "JP (+81)" },
-    { value: "+82", label: "KR (+82)" },
-    { value: "+971", label: "AE (+971)" },
-    { value: "+972", label: "IL (+972)" },
-    { value: "+62", label: "ID (+62)" },
-    { value: "+60", label: "MY (+60)" },
-    { value: "+63", label: "PH (+63)" },
-    { value: "+66", label: "TH (+66)" },
-    { value: "+84", label: "VN (+84)" },
-    { value: "+92", label: "PK (+92)" },
-    { value: "+880", label: "BD (+880)" },
-    { value: "+27", label: "ZA (+27)" },
-    { value: "+234", label: "NG (+234)" },
-    { value: "+254", label: "KE (+254)" },
-    { value: "+55", label: "BR (+55)" },
-    { value: "+52", label: "MX (+52)" },
-    { value: "+56", label: "CL (+56)" },
-    { value: "+54", label: "AR (+54)" },
-    { value: "+20", label: "EG (+20)" },
-    { value: "+90", label: "TR (+90)" },
-    { value: "+966", label: "SA (+966)" },
-    { value: "+974", label: "QA (+974)" },
-    { value: "+968", label: "OM (+968)" },
+    { value: "+91", label: "India", code: "IN" },
+    { value: "+1", label: "United States", code: "US" },
+    { value: "+1", label: "Canada", code: "CA" },
+    { value: "+44", label: "United Kingdom", code: "UK" },
+    { value: "+61", label: "Australia", code: "AU" },
+    { value: "+64", label: "New Zealand", code: "NZ" },
+    { value: "+49", label: "Germany", code: "DE" },
+    { value: "+33", label: "France", code: "FR" },
+    { value: "+39", label: "Italy", code: "IT" },
+    { value: "+34", label: "Spain", code: "ES" },
+    { value: "+31", label: "Netherlands", code: "NL" },
+    { value: "+46", label: "Sweden", code: "SE" },
+    { value: "+47", label: "Norway", code: "NO" },
+    { value: "+45", label: "Denmark", code: "DK" },
+    { value: "+41", label: "Switzerland", code: "CH" },
+    { value: "+65", label: "Singapore", code: "SG" },
+    { value: "+81", label: "Japan", code: "JP" },
+    { value: "+82", label: "South Korea", code: "KR" },
+    { value: "+971", label: "UAE", code: "AE" },
+    { value: "+972", label: "Israel", code: "IL" },
+    { value: "+62", label: "Indonesia", code: "ID" },
+    { value: "+60", label: "Malaysia", code: "MY" },
+    { value: "+63", label: "Philippines", code: "PH" },
+    { value: "+66", label: "Thailand", code: "TH" },
+    { value: "+84", label: "Vietnam", code: "VN" },
+    { value: "+92", label: "Pakistan", code: "PK" },
+    { value: "+880", label: "Bangladesh", code: "BD" },
+    { value: "+27", label: "South Africa", code: "ZA" },
+    { value: "+234", label: "Nigeria", code: "NG" },
+    { value: "+254", label: "Kenya", code: "KE" },
+    { value: "+55", label: "Brazil", code: "BR" },
+    { value: "+52", label: "Mexico", code: "MX" },
+    { value: "+56", label: "Chile", code: "CL" },
+    { value: "+54", label: "Argentina", code: "AR" },
+    { value: "+20", label: "Egypt", code: "EG" },
+    { value: "+90", label: "Turkey", code: "TR" },
+    { value: "+966", label: "Saudi Arabia", code: "SA" },
+    { value: "+974", label: "Qatar", code: "QA" },
+    { value: "+968", label: "Oman", code: "OM" },
 ];
 
 
 export function ContactForm() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [popoverOpen, setPopoverOpen] = React.useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -174,19 +178,60 @@ export function ContactForm() {
                     control={form.control}
                     name="countryCode"
                     render={({ field }) => (
-                        <FormItem className="w-1/4">
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Code" />
-                                </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    {countryCodes.map((c, i) => <SelectItem key={`${c.value}-${c.label}-${i}`} value={c.value}>{c.label}</SelectItem>)}
-                                </SelectContent>
-                            </Select>
-                            <FormMessage />
-                        </FormItem>
+                      <FormItem className="flex flex-col">
+                        <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant="outline"
+                                role="combobox"
+                                className={cn(
+                                  "w-[150px] justify-between",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value
+                                  ? `${countryCodes.find(
+                                      (c) => c.value === field.value
+                                    )?.code} (${field.value})`
+                                  : "Select code"}
+                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-[200px] p-0">
+                            <Command>
+                              <CommandInput placeholder="Search country..." />
+                              <CommandList>
+                                <CommandEmpty>No country found.</CommandEmpty>
+                                <CommandGroup>
+                                  {countryCodes.map((country) => (
+                                    <CommandItem
+                                      value={`${country.label} (${country.value})`}
+                                      key={country.value + country.code}
+                                      onSelect={() => {
+                                        form.setValue("countryCode", country.value)
+                                        setPopoverOpen(false)
+                                      }}
+                                    >
+                                      <Check
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          country.value === field.value
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                      {country.label} ({country.value})
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
                     )}
                 />
                 <FormField
@@ -262,3 +307,5 @@ export function ContactForm() {
     </Form>
   );
 }
+
+    
