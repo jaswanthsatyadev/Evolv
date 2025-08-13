@@ -3,7 +3,7 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Cpu, Image, SearchCode, Star, ArrowRight } from "lucide-react";
+import { Cpu, Image, SearchCode, Star, ArrowRight, FireExtinguisher, Flame } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
 import React from "react";
@@ -28,7 +28,20 @@ const servicesData = [
         { title: "Quick Results Delivery", description: "In less than 2 days" }
       ],
       whatWeCanDo: "Turn normal clothes images into high quality realistic images with models wearing them which are ready to use in your market places.",
-      // Placeholder for before/after photos
+      pricing: [
+        {
+          type: "General Images",
+          originalPrice: "20",
+          discountedPrice: "10",
+          description: "Standard apparel images with AI models."
+        },
+        {
+          type: "Custom Images",
+          originalPrice: "30",
+          discountedPrice: "15",
+          description: "Give custom instructions on how you want the images to look exactly."
+        }
+      ]
     }
   },
   {
@@ -142,9 +155,9 @@ export function Services() {
                   {selectedService.detailedInfo.shortDescription}
                 </DialogDescription>
               </DialogHeader>
-              <div className="py-4 space-y-6">
+              <div className="py-4 space-y-8">
                 
-                {selectedService.detailedInfo.benefits.length > 0 && (
+                {selectedService.detailedInfo.benefits && selectedService.detailedInfo.benefits.length > 0 && (
                     <div>
                         <h3 className="text-xl font-bold font-headline mb-4">Core Benefits</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -158,10 +171,36 @@ export function Services() {
                     </div>
                 )}
                 
-                <div>
-                    <h3 className="text-xl font-bold font-headline mb-3">What we can do?</h3>
-                    <p className="text-muted-foreground">{selectedService.detailedInfo.whatWeCanDo}</p>
-                </div>
+                {selectedService.detailedInfo.whatWeCanDo && (
+                    <div>
+                        <h3 className="text-xl font-bold font-headline mb-3">What we can do?</h3>
+                        <p className="text-muted-foreground">{selectedService.detailedInfo.whatWeCanDo}</p>
+                    </div>
+                )}
+
+                {selectedService.detailedInfo.pricing && (
+                    <div>
+                        <h3 className="text-xl font-bold font-headline mb-4">Pricing</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {selectedService.detailedInfo.pricing.map((tier, index) => (
+                                <div key={index} className="bg-secondary/50 p-6 rounded-lg border border-accent/20 flex flex-col">
+                                    <h4 className="text-lg font-bold text-foreground mb-2">{tier.type}</h4>
+                                    <div className="flex items-baseline gap-2 mb-3">
+                                        <span className="text-3xl font-bold text-accent">₹{tier.discountedPrice}</span>
+                                        <span className="text-lg line-through text-muted-foreground">₹{tier.originalPrice}</span>
+                                        <span className="text-sm text-muted-foreground">/ image</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-yellow-400 mb-4">
+                                        <Flame className="h-5 w-5"/>
+                                        <span className="font-bold">50% OFF Right Now!</span>
+                                    </div>
+                                    <p className="text-muted-foreground text-sm flex-grow">{tier.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
 
                 {selectedService.id === 'ai-image' && (
                   <div>
