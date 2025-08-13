@@ -125,7 +125,7 @@ export function ContactForm() {
             <FormItem>
               <FormLabel>WhatsApp Number</FormLabel>
               <FormControl>
-                <Input placeholder="+91 9392628795" {...field} />
+                <Input placeholder="Your Phone Number" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
