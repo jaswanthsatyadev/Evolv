@@ -2,8 +2,11 @@
 "use server";
 
 import { z } from "zod";
-import fs from "fs/promises";
-import path from "path";
+import nodemailer from "nodemailer";
+
+// Load environment variables
+require('dotenv').config({ path: '.env.local' });
+
 
 const inquirySchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -22,29 +25,14 @@ export type Inquiry = InquiryFormData & {
   submittedAt: string;
 };
 
-const submissionsPath = path.join(process.cwd(), 'submissions.json');
 
-async function readSubmissions(): Promise<Inquiry[]> {
-  try {
-    const data = await fs.readFile(submissionsPath, 'utf-8');
-    return JSON.parse(data);
-  } catch (error: any) {
-    if (error.code === 'ENOENT') {
-      // If the file doesn't exist, return an empty array.
-      return [];
+const formatService = (service: string) => {
+    switch(service) {
+        case 'ai-image': return 'AI Image Service';
+        case 'web-scraping': return 'Web Scraping';
+        case 'custom': return 'Custom Solution';
+        default: return 'N/A';
     }
-    console.error("Failed to read submissions file:", error);
-    throw new Error("Could not read submissions.");
-  }
-}
-
-async function writeSubmissions(data: Inquiry[]): Promise<void> {
-  try {
-    await fs.writeFile(submissionsPath, JSON.stringify(data, null, 2), 'utf-8');
-  } catch (error) {
-    console.error("Failed to write to submissions file:", error);
-    throw new Error("Could not save submission.");
-  }
 }
 
 export async function submitInquiry(data: InquiryFormData) {
@@ -55,54 +43,62 @@ export async function submitInquiry(data: InquiryFormData) {
     throw new Error("Invalid form data.");
   }
 
-  try {
-    const submissions = await readSubmissions();
-    const newInquiry: Inquiry = {
-      ...parsedData.data,
-      id: new Date().toISOString() + Math.random().toString(36).substr(2, 9),
-      submittedAt: new Date().toISOString(),
-    };
-    submissions.unshift(newInquiry); // Add to the beginning
-    await writeSubmissions(submissions);
+  const { name, company, whatsapp, email, service, customService, message } = parsedData.data;
 
+  // IMPORTANT: For Gmail, you might need to use an "App Password" 
+  // if you have 2-Factor Authentication enabled.
+  // See: https://support.google.com/accounts/answer/185833
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true, // use SSL
+    auth: {
+      user: process.env.EMAIL_USER, // Your Gmail address from .env.local
+      pass: process.env.EMAIL_PASS, // Your Gmail App Password from .env.local
+    },
+  });
+
+  const mailOptions = {
+    from: `"Evolv AI Agency" <${process.env.EMAIL_USER}>`,
+    to: process.env.EMAIL_USER, // Sending to yourself
+    subject: `New Inquiry from ${name} (${company})`,
+    html: `
+      <div style="font-family: sans-serif; line-height: 1.6;">
+        <h2 style="color: #0B2C34;">New Inquiry from Evolv AI Website</h2>
+        <p>A new inquiry has been submitted through the contact form.</p>
+        <hr>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Company:</strong> ${company}</p>
+        <p><strong>WhatsApp:</strong> <a href="https://wa.me/${whatsapp.replace('+', '')}">${whatsapp}</a></p>
+        <p><strong>Email:</strong> ${email || 'Not provided'}</p>
+        <p><strong>Service of Interest:</strong> ${formatService(service)}</p>
+        ${service === 'custom' ? `<p><strong>Custom Requirement:</strong> ${customService}</p>` : ''}
+        ${message ? `<p><strong>Message:</strong> ${message}</p>` : ''}
+        <hr>
+        <p style="font-size: 0.8em; color: #555;">This email was sent automatically from your website.</p>
+      </div>
+    `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
     return { success: true, message: "Inquiry submitted successfully." };
   } catch (error) {
-    console.error("Error during form submission process:", error);
+    console.error("Failed to send email:", error);
     // This will be caught by the form's try-catch block
     throw new Error("Failed to submit inquiry due to a server error.");
   }
 }
 
+// The following functions are no longer active as we are not using a DB.
+// They can be removed or kept for future database integration.
+
 export async function getInquiries(): Promise<Inquiry[]> {
-  try {
-    const submissions = await readSubmissions();
-    // Sort by date, newest first
-    return submissions.sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime());
-  } catch (error) {
-    console.error("Error fetching inquiries:", error);
-    return []; // Return empty array on error
-  }
+  console.log("getInquiries is not active. Submissions are sent via email.");
+  return Promise.resolve([]);
 }
 
 export async function deleteInquiry(id: string) {
-    if (!id) {
-        throw new Error("No ID provided for deletion.");
-    }
-
-    try {
-        let submissions = await readSubmissions();
-        const initialLength = submissions.length;
-        
-        submissions = submissions.filter(inq => inq.id !== id);
-
-        if (submissions.length === initialLength) {
-             throw new Error("Inquiry not found for deletion.");
-        }
-
-        await writeSubmissions(submissions);
-        return { success: true, message: "Inquiry deleted." };
-    } catch (error: any) {
-        console.error("Error deleting inquiry:", error);
-        throw new Error(error.message || "Could not delete the inquiry.");
-    }
+    console.log("deleteInquiry is not active. Submissions are sent via email.");
+    return Promise.resolve({ success: true, message: "This action is not available." });
 }
