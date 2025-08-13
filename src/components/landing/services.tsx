@@ -111,9 +111,15 @@ export function Services() {
                         <Badge key={i} variant="secondary" className="bg-muted/50 text-muted-foreground">{detail}</Badge>
                       ))}
                     </div>
-                    <Button variant="outline" className="mt-6 w-full" onClick={() => handleKnowMoreClick(service)}>
-                        Know More
-                    </Button>
+                    {service.id === 'targeted-marketing' ? (
+                      <Button variant="outline" className="mt-6 w-full" disabled>
+                        Coming Soon
+                      </Button>
+                    ) : (
+                      <Button variant="outline" className="mt-6 w-full" onClick={() => handleKnowMoreClick(service)}>
+                          Know More
+                      </Button>
+                    )}
                   </CardContent>
                 </Card>
               </div>
