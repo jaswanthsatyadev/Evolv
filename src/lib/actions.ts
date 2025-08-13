@@ -2,6 +2,8 @@
 "use server";
 
 import { z } from "zod";
+import fs from "fs/promises";
+import path from "path";
 
 const inquirySchema = z.object({
   name: z.string().min(2),
@@ -11,7 +13,30 @@ const inquirySchema = z.object({
   email: z.string().email().optional().or(z.literal('')),
   service: z.enum(["ai-image", "web-scraping", "custom"]),
   customService: z.string().optional(),
+  message: z.string().optional(),
 });
+
+export type Inquiry = z.infer<typeof inquirySchema> & {
+  submittedAt: string;
+};
+
+const submissionsFilePath = path.join(process.cwd(), 'submissions.json');
+
+async function getSubmissions(): Promise<Inquiry[]> {
+  try {
+    const data = await fs.readFile(submissionsFilePath, 'utf-8');
+    return JSON.parse(data);
+  } catch (error: any) {
+    if (error.code === 'ENOENT') {
+      return []; // File doesn't exist, return empty array
+    }
+    throw error;
+  }
+}
+
+async function saveSubmissions(submissions: Inquiry[]) {
+  await fs.writeFile(submissionsFilePath, JSON.stringify(submissions, null, 2));
+}
 
 export async function submitInquiry(data: unknown) {
   const parsedData = inquirySchema.safeParse(data);
@@ -21,11 +46,16 @@ export async function submitInquiry(data: unknown) {
     throw new Error("Invalid form data.");
   }
 
-  // Here you would typically send an email, save to a database, etc.
-  // For this example, we'll just log it and simulate a delay.
-  console.log("New Inquiry:", parsedData.data);
+  const submissions = await getSubmissions();
+  const newInquiry: Inquiry = {
+    ...parsedData.data,
+    submittedAt: new Date().toISOString(),
+  };
 
-  await new Promise(resolve => setTimeout(resolve, 1000));
+  submissions.unshift(newInquiry); // Add to the beginning
+  await saveSubmissions(submissions);
+
+  console.log("New Inquiry:", newInquiry);
 
   // Simulate a potential error
   if (parsedData.data.name.toLowerCase() === "error") {
@@ -33,4 +63,9 @@ export async function submitInquiry(data: unknown) {
   }
 
   return { success: true, message: "Inquiry submitted successfully." };
+}
+
+
+export async function getInquiries(): Promise<Inquiry[]> {
+    return await getSubmissions();
 }

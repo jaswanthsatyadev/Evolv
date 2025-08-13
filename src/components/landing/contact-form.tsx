@@ -44,6 +44,7 @@ const formSchema = z.object({
   email: z.string().email().optional().or(z.literal('')),
   service: z.enum(["ai-image", "web-scraping", "custom"]),
   customService: z.string().optional(),
+  message: z.string().optional(),
 }).refine(data => {
     if (data.service === 'custom') {
         return !!data.customService && data.customService.length > 10;
@@ -111,6 +112,7 @@ export function ContactForm() {
       whatsapp: "",
       email: "",
       customService: "",
+      message: "",
     },
   });
 
@@ -299,6 +301,19 @@ export function ContactForm() {
             )}
             />
         )}
+         <FormField
+            control={form.control}
+            name="message"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>Your Message (Optional)</FormLabel>
+                <FormControl>
+                    <Textarea placeholder="Any additional details for us?" {...field} />
+                </FormControl>
+                <FormMessage />
+                </FormItem>
+            )}
+            />
         <Button type="submit" size="lg" className="w-full font-bold bg-accent text-accent-foreground hover:bg-accent/90" disabled={isSubmitting}>
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Send Inquiry
@@ -307,5 +322,3 @@ export function ContactForm() {
     </Form>
   );
 }
-
-    

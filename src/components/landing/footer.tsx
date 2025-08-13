@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { Logo } from "@/components/icons";
 
@@ -8,9 +9,12 @@ export function Footer() {
         <Link href="#" className="flex items-center gap-2" prefetch={false}>
           <Logo className="h-10 w-auto" />
         </Link>
-        <p className="text-sm text-muted-foreground text-center md:text-left">
-          &copy; {new Date().getFullYear()} Evolv AI Agency. All rights reserved. <br/> Founded in Hyderabad, India by Jaswanth Satya Dev.
-        </p>
+        <div className="text-sm text-muted-foreground text-center md:text-left">
+          <Link href="/admin" className="cursor-pointer hover:text-accent-foreground transition-colors">
+            &copy; {new Date().getFullYear()} Evolv AI Agency. All rights reserved. 
+          </Link>
+          <br/> Founded in Hyderabad, India by Jaswanth Satya Dev.
+        </div>
         <nav className="flex gap-4 sm:gap-6">
           <Link
             href="#services"
