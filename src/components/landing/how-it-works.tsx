@@ -11,7 +11,7 @@ const aiImageSteps = [
   {
     icon: <Milestone className="mt-1 h-8 w-8 flex-shrink-0 text-accent" />,
     title: "2. We work our AI magic (1-2 days)",
-    description: "Our custom-trained AI models generate realistic photos of models wearing your apparel.",
+    description: "Our fine-tuned AI models generate realistic photos of models wearing your apparel.",
   },
   {
     icon: <CheckCircle className="mt-1 h-8 w-8 flex-shrink-0 text-green-500" />,
