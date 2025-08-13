@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,6 +34,7 @@ const formSchema = z.object({
   company: z.string().min(2, {
     message: "Company name must be at least 2 characters.",
   }),
+  countryCode: z.string(),
   whatsapp: z.string().min(10, {
     message: "Please enter a valid WhatsApp number.",
   }),
@@ -49,6 +51,14 @@ const formSchema = z.object({
     path: ['customService'],
 });
 
+const countryCodes = [
+    { value: "+91", label: "IN (+91)" },
+    { value: "+1", label: "US (+1)" },
+    { value: "+44", label: "UK (+44)" },
+    { value: "+61", label: "AU (+61)" },
+    { value: "+81", label: "JP (+81)" },
+];
+
 export function ContactForm() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -58,6 +68,7 @@ export function ContactForm() {
     defaultValues: {
       name: "",
       company: "",
+      countryCode: "+91",
       whatsapp: "",
       email: "",
       customService: "",
@@ -69,7 +80,10 @@ export function ContactForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     try {
-      await submitInquiry(values);
+        const fullWhatsapp = `${values.countryCode}${values.whatsapp}`;
+        const submissionData = { ...values, whatsapp: fullWhatsapp };
+
+      await submitInquiry(submissionData);
       toast({
         title: "Inquiry Submitted!",
         description: "Thank you for reaching out. We will get back to you shortly.",
@@ -118,19 +132,43 @@ export function ContactForm() {
             )}
             />
         </div>
-        <FormField
-          control={form.control}
-          name="whatsapp"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>WhatsApp Number</FormLabel>
-              <FormControl>
-                <Input placeholder="Your Phone Number" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <FormItem>
+            <FormLabel>WhatsApp Number</FormLabel>
+            <div className="flex gap-2">
+                <FormField
+                    control={form.control}
+                    name="countryCode"
+                    render={({ field }) => (
+                        <FormItem className="w-1/4">
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Code" />
+                                </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                    {countryCodes.map(c => <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                control={form.control}
+                name="whatsapp"
+                render={({ field }) => (
+                    <FormItem className="flex-1">
+                    <FormControl>
+                        <Input placeholder="Your Phone Number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+            </div>
+        </FormItem>
+
         <FormField
           control={form.control}
           name="email"
