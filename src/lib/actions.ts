@@ -17,7 +17,7 @@ const inquirySchema = z.object({
 });
 
 export type Inquiry = z.infer<typeof inquirySchema> & {
-  submittedAt: string; // Keep as ISO string for Firestore
+  submittedAt: string; // Keep as ISO string
   id: string;
 };
 
@@ -39,6 +39,7 @@ export async function submitInquiry(data: unknown) {
     return { success: true, message: "Inquiry submitted successfully." };
   } catch (e) {
     console.error("Error adding document: ", e);
+    // Ensure the function always returns, even on error.
     throw new Error("Failed to submit inquiry.");
   }
 }
@@ -49,11 +50,15 @@ export async function getInquiries(): Promise<Inquiry[]> {
         const inquiriesCol = collection(db, "inquiries");
         const q = query(inquiriesCol, orderBy("submittedAt", "desc"));
         const inquirySnapshot = await getDocs(q);
-        const inquiryList = inquirySnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data(),
-            submittedAt: doc.data().submittedAt,
-        } as Inquiry));
+        const inquiryList = inquirySnapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+                id: doc.id,
+                ...data,
+                // Firestore timestamp might be an object, ensure it's a string
+                submittedAt: data.submittedAt,
+            } as Inquiry;
+        });
         return inquiryList;
     } catch(error) {
         console.error("Failed to fetch inquiries:", error);
@@ -63,6 +68,9 @@ export async function getInquiries(): Promise<Inquiry[]> {
 
 export async function deleteInquiry(id: string) {
     try {
+        if (!id) {
+            throw new Error("No ID provided for deletion.");
+        }
         const docRef = doc(db, "inquiries", id);
         const docSnap = await getDoc(docRef);
 
