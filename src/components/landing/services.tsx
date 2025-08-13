@@ -114,7 +114,7 @@ const servicesData = [
     id: "targeted-marketing",
     icon: <Cpu className="h-10 w-10 text-muted-foreground" />,
     title: "Targeted Marketing Solutions",
-    description: "We help you market products online and provide strategic ideas and suggestions for platforms like Instagram and WhatsApp.",
+    description: "We help you market products online and provide strategic ideas and suggestions on platforms like Instagram, WhatsApp, Facebook, and YouTube.",
     details: ["Coming Soon"],
     popular: false,
     detailedInfo: {
