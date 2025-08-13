@@ -16,9 +16,13 @@ const inquirySchema = z.object({
   message: z.string().optional(),
 });
 
-export type Inquiry = z.infer<typeof inquirySchema> & {
-  submittedAt: string; // Keep as ISO string
+// This is the type for data coming from the form
+export type InquiryFormData = z.infer<typeof inquirySchema>;
+
+// This is the type for data stored in and retrieved from Firestore
+export type Inquiry = InquiryFormData & {
   id: string;
+  submittedAt: string; // Stored as ISO string
 };
 
 
@@ -27,6 +31,7 @@ export async function submitInquiry(data: unknown) {
 
   if (!parsedData.success) {
     console.error("Invalid form data:", parsedData.error.flatten());
+    // Throw an error to be caught by the client-side form handler
     throw new Error("Invalid form data.");
   }
 
@@ -39,7 +44,7 @@ export async function submitInquiry(data: unknown) {
     return { success: true, message: "Inquiry submitted successfully." };
   } catch (e) {
     console.error("Error adding document: ", e);
-    // Ensure the function always returns, even on error.
+    // Re-throw the error to be caught by the client
     throw new Error("Failed to submit inquiry.");
   }
 }
@@ -55,8 +60,8 @@ export async function getInquiries(): Promise<Inquiry[]> {
             return {
                 id: doc.id,
                 ...data,
-                // Firestore timestamp might be an object, ensure it's a string
-                submittedAt: data.submittedAt,
+                 // Ensure submittedAt is always a string, even if nullish in DB
+                submittedAt: data.submittedAt || new Date().toISOString(),
             } as Inquiry;
         });
         return inquiryList;

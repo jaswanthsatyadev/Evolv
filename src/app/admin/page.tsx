@@ -54,6 +54,8 @@ export default function AdminPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    // IMPORTANT: This is not a secure way to handle passwords.
+    // This is for demonstration purposes only.
     if (password === 'Qwertyuiop123$') {
       setIsAuthenticated(true);
       toast({
