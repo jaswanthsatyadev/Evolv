@@ -9,7 +9,6 @@ const inquirySchema = z.object({
   name: z.string().min(2),
   company: z.string().min(2),
   whatsapp: z.string().min(10),
-  countryCode: z.string(),
   email: z.string().email().optional().or(z.literal('')),
   service: z.enum(["ai-image", "web-scraping", "custom"]),
   customService: z.string().optional(),

@@ -37,7 +37,6 @@ const formSchema = z.object({
   company: z.string().min(2, {
     message: "Company name must be at least 2 characters.",
   }),
-  countryCode: z.string(),
   whatsapp: z.string().min(10, {
     message: "Please enter a valid WhatsApp number.",
   }),
@@ -102,13 +101,13 @@ export function ContactForm() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [popoverOpen, setPopoverOpen] = React.useState(false);
+  const [countryCode, setCountryCode] = React.useState("+91");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       company: "",
-      countryCode: "+91",
       whatsapp: "",
       email: "",
       customService: "",
@@ -123,7 +122,7 @@ export function ContactForm() {
     try {
         const submissionData = { 
             ...values, 
-            whatsapp: `${values.countryCode}${values.whatsapp}` 
+            whatsapp: `${countryCode}${values.whatsapp}` 
         };
 
       await submitInquiry(submissionData);
@@ -178,66 +177,53 @@ export function ContactForm() {
         <FormItem>
             <FormLabel>WhatsApp Number</FormLabel>
             <div className="flex gap-2">
-                <FormField
-                    control={form.control}
-                    name="countryCode"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col">
-                        <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
-                          <PopoverTrigger asChild>
-                            <FormControl>
-                              <Button
-                                variant="outline"
-                                role="combobox"
+                <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
+                    <PopoverTrigger asChild>
+                    <Button
+                        variant="outline"
+                        role="combobox"
+                        className="w-[150px] justify-between"
+                    >
+                        {countryCode
+                        ? `${countryCodes.find(
+                            (c) => c.value === countryCode
+                        )?.code} (${countryCode})`
+                        : "Select code"}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0">
+                    <Command>
+                        <CommandInput placeholder="Search country..." />
+                        <CommandList>
+                        <CommandEmpty>No country found.</CommandEmpty>
+                        <CommandGroup>
+                            {countryCodes.map((country) => (
+                            <CommandItem
+                                value={`${country.label} (${country.value})`}
+                                key={country.value + country.code}
+                                onSelect={() => {
+                                setCountryCode(country.value)
+                                setPopoverOpen(false)
+                                }}
+                            >
+                                <Check
                                 className={cn(
-                                  "w-[150px] justify-between",
-                                  !field.value && "text-muted-foreground"
+                                    "mr-2 h-4 w-4",
+                                    country.value === countryCode
+                                    ? "opacity-100"
+                                    : "opacity-0"
                                 )}
-                              >
-                                {field.value
-                                  ? `${countryCodes.find(
-                                      (c) => c.value === field.value
-                                    )?.code} (${field.value})`
-                                  : "Select code"}
-                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                              </Button>
-                            </FormControl>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-[200px] p-0">
-                            <Command>
-                              <CommandInput placeholder="Search country..." />
-                              <CommandList>
-                                <CommandEmpty>No country found.</CommandEmpty>
-                                <CommandGroup>
-                                  {countryCodes.map((country) => (
-                                    <CommandItem
-                                      value={`${country.label} (${country.value})`}
-                                      key={country.value + country.code}
-                                      onSelect={() => {
-                                        form.setValue("countryCode", country.value)
-                                        setPopoverOpen(false)
-                                      }}
-                                    >
-                                      <Check
-                                        className={cn(
-                                          "mr-2 h-4 w-4",
-                                          country.value === field.value
-                                            ? "opacity-100"
-                                            : "opacity-0"
-                                        )}
-                                      />
-                                      {country.label} ({country.value})
-                                    </CommandItem>
-                                  ))}
-                                </CommandGroup>
-                              </CommandList>
-                            </Command>
-                          </PopoverContent>
-                        </Popover>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                />
+                                />
+                                {country.label} ({country.value})
+                            </CommandItem>
+                            ))}
+                        </CommandGroup>
+                        </CommandList>
+                    </Command>
+                    </PopoverContent>
+                </Popover>
+
                 <FormField
                 control={form.control}
                 name="whatsapp"
