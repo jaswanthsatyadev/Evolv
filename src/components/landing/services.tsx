@@ -13,7 +13,7 @@ const servicesData = [
   {
     id: "ai-image",
     icon: <Image className="h-10 w-10 text-accent" />,
-    title: "AI Image Services",
+    title: "Model Anything",
     description: "Transform your apparel photos. We use custom AI to place your clothing on models, saving you time and money on photoshoots.",
     details: ["₹10 per image", "1-2 day turnaround", "High-quality results"],
     popular: true,
