@@ -21,7 +21,7 @@ export function Hero() {
           <div className="flex flex-col gap-4 min-[400px]:flex-row justify-center opacity-0 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
             <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 transition-transform duration-300 hover:scale-105">
               <Link href="#contact" className="font-semibold">
-                Start Your Project
+                Lets Build Together!
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
