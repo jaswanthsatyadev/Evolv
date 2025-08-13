@@ -23,7 +23,7 @@ export function About() {
           <div className="flex items-center justify-center opacity-0 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
             <Card className="overflow-hidden rounded-xl shadow-2xl w-full max-w-md border-accent/20">
               <Image
-                src="https://placehold.co/600x600.png"
+                src="https://images.unsplash.com/photo-1484069560501-87d72b0c3669?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHx3aHl8ZW58MHx8fHwxNzU1MDczMjAxfDA&ixlib=rb-4.1.0&q=80&w=1080"
                 width={600}
                 height={600}
                 alt="Founder Jaswanth Satya Dev"
