@@ -3,7 +3,7 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Cpu, Image, SearchCode, Star, ArrowRight, FireExtinguisher, Flame } from "lucide-react";
+import { Cpu, Image, SearchCode, Star, ArrowRight, FireExtinguisher, Flame, Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
 import React from "react";
@@ -63,6 +63,19 @@ const servicesData = [
     }
   },
   {
+    id: "chatbots",
+    icon: <Bot className="h-10 w-10 text-muted-foreground" />,
+    title: "Whatsapp & Website Chatbots",
+    description: "Integrate AI chatbots into your business, replacing human interaction and automating user engagement 24/7.",
+    details: ["Coming Soon"],
+    popular: false,
+    detailedInfo: {
+        shortDescription: "Coming soon: AI-powered chatbots to automate your customer interactions.",
+        benefits: [],
+        whatWeCanDo: "This service is currently under development. Stay tuned for updates!"
+    }
+  },
+  {
     id: "targeted-marketing",
     icon: <Cpu className="h-10 w-10 text-muted-foreground" />,
     title: "Targeted Marketing Solutions",
@@ -101,7 +114,7 @@ export function Services() {
               We offer a range of specialized AI services designed to give your business a competitive edge.
             </p>
           </div>
-          <div className="mx-auto grid items-stretch gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-3">
+          <div className="mx-auto grid items-stretch gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-6xl lg:grid-cols-2 xl:grid-cols-4">
             {servicesData.map((service, index) => (
               <div
                 key={service.id}
@@ -125,7 +138,7 @@ export function Services() {
                         <Badge key={i} variant="secondary" className="bg-muted/50 text-muted-foreground">{detail}</Badge>
                       ))}
                     </div>
-                    {service.id === 'targeted-marketing' ? (
+                    {service.id.includes('marketing') || service.id.includes('chatbots') ? (
                       <Button variant="outline" className="mt-6 w-full" disabled>
                         Coming Soon
                       </Button>
