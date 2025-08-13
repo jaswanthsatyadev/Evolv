@@ -11,7 +11,7 @@ export function Contact() {
             <div className="inline-block rounded-lg bg-accent/10 px-3 py-1 text-sm text-accent font-medium">
                 Contact Us
             </div>
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-accent-foreground">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-foreground">
                 Let&apos;s Build Together
             </h2>
             <p className="max-w-md text-muted-foreground md:text-lg/relaxed">

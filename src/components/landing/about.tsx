@@ -10,7 +10,7 @@ export function About() {
             <div className="inline-block rounded-lg bg-accent/10 px-3 py-1 text-sm text-accent font-medium">
               About Evolv
             </div>
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-accent-foreground leading-tight">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-foreground leading-tight">
               Why Evolv? Why Now?
             </h2>
             <p className="max-w-[600px] text-muted-foreground md:text-lg/relaxed">
