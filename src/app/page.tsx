@@ -1,5 +1,6 @@
 import { About } from "@/components/landing/about";
 import { Contact } from "@/components/landing/contact";
+import { Faq } from "@/components/landing/faq";
 import { Footer } from "@/components/landing/footer";
 import { Header } from "@/components/landing/header";
 import { Hero } from "@/components/landing/hero";
@@ -16,6 +17,7 @@ export default function Home() {
         <HowItWorks />
         <About />
         <Contact />
+        <Faq />
       </main>
       <Footer />
     </div>

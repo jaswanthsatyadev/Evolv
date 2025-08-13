@@ -33,6 +33,13 @@ export function Footer() {
           >
             Contact
           </Link>
+           <Link
+            href="#faq"
+            className="text-sm hover:text-accent underline-offset-4 text-muted-foreground transition-colors"
+            prefetch={false}
+          >
+            FAQs
+          </Link>
         </nav>
       </div>
     </footer>
