@@ -245,16 +245,38 @@ export function Services() {
                 {selectedService.id === 'ai-image' && (
                   <div>
                     <h3 className="text-xl font-bold font-headline mb-3">Before & After</h3>
-                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rounded-lg overflow-hidden border border-accent/20 p-4 bg-secondary/30">
-                      <div className="space-y-2">
-                        <Badge variant="secondary">Before</Badge>
-                        <Image src="/before.png" alt="Before AI processing" width={500} height={750} className="rounded-lg object-cover aspect-[2/3] border" />
+                     <div className="grid grid-cols-1 gap-8 rounded-lg overflow-hidden border border-accent/20 p-4 bg-secondary/30">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Badge variant="outline">Before</Badge>
+                          <Image src="/model-anything-example-images/before_img1.jpg" alt="Before AI processing" width={500} height={750} className="rounded-lg object-cover aspect-[2/3] border" />
+                        </div>
+                        <div className="space-y-2">
+                          <Badge variant="default" className="bg-accent text-accent-foreground">After</Badge>
+                          <Image src="/model-anything-example-images/after_img1.png" alt="After AI processing" width={500} height={750} className="rounded-lg object-cover aspect-[2/3] border" />
+                        </div>
                       </div>
-                      <div className="space-y-2">
-                        <Badge variant="default" className="bg-accent text-accent-foreground">After</Badge>
-                        <Image src="/after.png" alt="After AI processing" width={500} height={750} className="rounded-lg object-cover aspect-[2/3] border" />
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Badge variant="outline">Before</Badge>
+                          <Image src="/model-anything-example-images/before_img2.jpg" alt="Before AI processing" width={500} height={750} className="rounded-lg object-cover aspect-[2/3] border" />
+                        </div>
+                        <div className="space-y-2">
+                          <Badge variant="default" className="bg-accent text-accent-foreground">After</Badge>
+                          <Image src="/model-anything-example-images/after_img2.png" alt="After AI processing" width={500} height={750} className="rounded-lg object-cover aspect-[2/3] border" />
+                        </div>
                       </div>
-                    </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Badge variant="outline">Before</Badge>
+                          <Image src="/model-anything-example-images/before_img3.png" alt="Before AI processing" width={500} height={750} className="rounded-lg object-cover aspect-[2/3] border" />
+                        </div>
+                        <div className="space-y-2">
+                          <Badge variant="default" className="bg-accent text-accent-foreground">After</Badge>
+                          <Image src="/model-anything-example-images/after_img3.png" alt="After AI processing" width={500} height={750} className="rounded-lg object-cover aspect-[2/3] border" />
+                        </div>
+                      </div>
+                    </div>  
                   </div>
                 )}
                 
