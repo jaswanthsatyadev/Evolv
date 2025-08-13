@@ -8,12 +8,14 @@ const inquirySchema = z.object({
   whatsapp: z.string().min(10),
   email: z.string().email().optional().or(z.literal('')),
   service: z.enum(["ai-image", "web-scraping", "custom"]),
+  customService: z.string().optional(),
 });
 
 export async function submitInquiry(data: unknown) {
   const parsedData = inquirySchema.safeParse(data);
 
   if (!parsedData.success) {
+    console.error("Invalid form data:", parsedData.error.flatten());
     throw new Error("Invalid form data.");
   }
 

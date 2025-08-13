@@ -8,7 +8,7 @@ import { Services } from "@/components/landing/services";
 
 export default function Home() {
   return (
-    <div className="flex min-h-[100dvh] flex-col overflow-x-hidden">
+    <div className="flex min-h-[100dvh] flex-col overflow-x-hidden bg-[#121212]">
       <Header />
       <main className="flex-1">
         <Hero />

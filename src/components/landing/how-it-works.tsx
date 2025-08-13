@@ -1,42 +1,40 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
-import { CheckCircle, Bot, SearchCode } from "lucide-react";
+import { CheckCircle, Bot, SearchCode, Milestone } from "lucide-react";
 
 const aiImageSteps = [
   {
-    title: "1. Consultation & Concept",
-    description: "We start by understanding your vision, brand, and the specific requirements for your images.",
+    icon: <Milestone className="mt-1 h-8 w-8 flex-shrink-0 text-accent" />,
+    title: "1. You give us your apparel images",
+    description: "Simply provide the photos of the clothes you want to feature. We'll handle the rest.",
   },
   {
-    title: "2. Prompt Engineering & Iteration",
-    description: "Our experts craft detailed prompts and work with you through iterations to refine the visual style.",
+    icon: <Milestone className="mt-1 h-8 w-8 flex-shrink-0 text-accent" />,
+    title: "2. We work our AI magic (1-2 days)",
+    description: "Our custom-trained AI models generate realistic photos of models wearing your apparel.",
   },
   {
-    title: "3. AI Generation & Curation",
-    description: "We generate a diverse set of images and curate the best options that align with your goals.",
-  },
-  {
-    title: "4. Final Delivery & Upscaling",
-    description: "You receive the final, high-resolution images, ready for use in your projects.",
+    icon: <CheckCircle className="mt-1 h-8 w-8 flex-shrink-0 text-green-500" />,
+    title: "3. We deliver stunning, realistic photos",
+    description: "You receive high-quality, market-ready images to use on your e-commerce site and social media.",
   },
 ];
 
 const webScrapingSteps = [
   {
-    title: "1. Discovery & Scoping",
-    description: "We identify your data requirements and analyze the target websites to plan the scraping strategy.",
+    icon: <Milestone className="mt-1 h-8 w-8 flex-shrink-0 text-accent" />,
+    title: "1. Tell us your data needs",
+    description: "Let us know what kind of data you need, its purpose, and any specific filters or sources.",
   },
   {
-    title: "2. Custom Scraper Development",
-    description: "Our team builds a robust, custom scraper designed to handle the specific structure of the target sites.",
+    icon: <Milestone className="mt-1 h-8 w-8 flex-shrink-0 text-accent" />,
+    title: "2. We build & deploy our scrapers (1-2 days)",
+    description: "Our team develops and runs automated solutions to gather the exact data you requested.",
   },
   {
-    title: "3. Data Extraction & Cleaning",
-    description: "We execute the scrape, then clean, structure, and validate the collected data for accuracy.",
-  },
-  {
-    title: "4. Secure Data Delivery",
-    description: "The final, clean dataset is delivered to you securely in your preferred format (CSV, JSON, API, etc.).",
+    icon: <CheckCircle className="mt-1 h-8 w-8 flex-shrink-0 text-green-500" />,
+    title: "3. You get clean, structured data",
+    description: "We deliver the final, quality-checked dataset in your preferred format, ready for analysis.",
   },
 ];
 
@@ -45,10 +43,10 @@ export function HowItWorks() {
     <section id="how-it-works" className="w-full py-12 md:py-24 lg:py-32 bg-secondary">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
+          <div className="inline-block rounded-lg bg-accent/10 px-3 py-1 text-sm font-medium text-accent">
             How It Works
           </div>
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline text-accent-foreground">
             Our Streamlined Process
           </h2>
           <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
@@ -57,24 +55,24 @@ export function HowItWorks() {
         </div>
         <div className="mx-auto mt-12 max-w-4xl">
           <Tabs defaultValue="ai-image" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="ai-image">
+            <TabsList className="grid w-full grid-cols-2 bg-muted/50">
+              <TabsTrigger value="ai-image" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
                 <Bot className="mr-2 h-4 w-4" /> AI Image Service
               </TabsTrigger>
-              <TabsTrigger value="web-scraping">
+              <TabsTrigger value="web-scraping" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
                 <SearchCode className="mr-2 h-4 w-4" /> Web Scraping Service
               </TabsTrigger>
             </TabsList>
             <TabsContent value="ai-image">
-              <Card>
-                <CardContent className="p-6">
-                  <div className="grid gap-6">
+              <Card className="border-accent/20">
+                <CardContent className="p-8">
+                  <div className="grid gap-8">
                     {aiImageSteps.map((step, index) => (
-                      <div key={index} className="flex items-start gap-4">
-                        <CheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-primary" />
+                      <div key={index} className="flex items-start gap-6">
+                        {step.icon}
                         <div>
-                          <h3 className="font-semibold">{step.title}</h3>
-                          <p className="text-sm text-muted-foreground">{step.description}</p>
+                          <h3 className="text-xl font-bold font-headline">{step.title}</h3>
+                          <p className="text-muted-foreground mt-1">{step.description}</p>
                         </div>
                       </div>
                     ))}
@@ -83,15 +81,15 @@ export function HowItWorks() {
               </Card>
             </TabsContent>
             <TabsContent value="web-scraping">
-              <Card>
-                <CardContent className="p-6">
-                  <div className="grid gap-6">
+              <Card className="border-accent/20">
+                <CardContent className="p-8">
+                <div className="grid gap-8">
                     {webScrapingSteps.map((step, index) => (
-                      <div key={index} className="flex items-start gap-4">
-                        <CheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-primary" />
+                      <div key={index} className="flex items-start gap-6">
+                        {step.icon}
                         <div>
-                          <h3 className="font-semibold">{step.title}</h3>
-                          <p className="text-sm text-muted-foreground">{step.description}</p>
+                          <h3 className="text-xl font-bold font-headline">{step.title}</h3>
+                          <p className="text-muted-foreground mt-1">{step.description}</p>
                         </div>
                       </div>
                     ))}

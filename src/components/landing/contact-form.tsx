@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { submitInquiry } from "@/lib/actions";
 import { Loader2 } from "lucide-react";
@@ -37,6 +38,15 @@ const formSchema = z.object({
   }),
   email: z.string().email().optional().or(z.literal('')),
   service: z.enum(["ai-image", "web-scraping", "custom"]),
+  customService: z.string().optional(),
+}).refine(data => {
+    if (data.service === 'custom') {
+        return !!data.customService && data.customService.length > 10;
+    }
+    return true;
+}, {
+    message: 'Please describe your custom requirement (min. 10 characters).',
+    path: ['customService'],
 });
 
 export function ContactForm() {
@@ -50,8 +60,11 @@ export function ContactForm() {
       company: "",
       whatsapp: "",
       email: "",
+      customService: "",
     },
   });
+
+  const selectedService = form.watch("service");
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
@@ -60,6 +73,7 @@ export function ContactForm() {
       toast({
         title: "Inquiry Submitted!",
         description: "Thank you for reaching out. We will get back to you shortly.",
+        className: "bg-green-800 text-white border-green-800"
       });
       form.reset();
     } catch (error) {
@@ -111,7 +125,7 @@ export function ContactForm() {
             <FormItem>
               <FormLabel>WhatsApp Number</FormLabel>
               <FormControl>
-                <Input placeholder="+1 234 567 8900" {...field} />
+                <Input placeholder="+91 9392628795" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -152,7 +166,22 @@ export function ContactForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full font-bold" disabled={isSubmitting}>
+        {selectedService === 'custom' && (
+            <FormField
+            control={form.control}
+            name="customService"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>Describe your custom need</FormLabel>
+                <FormControl>
+                    <Textarea placeholder="Tell us what you're looking for..." {...field} />
+                </FormControl>
+                <FormMessage />
+                </FormItem>
+            )}
+            />
+        )}
+        <Button type="submit" size="lg" className="w-full font-bold bg-accent text-accent-foreground hover:bg-accent/90" disabled={isSubmitting}>
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Send Inquiry
         </Button>
