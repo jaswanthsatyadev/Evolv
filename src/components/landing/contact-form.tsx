@@ -54,10 +54,45 @@ const formSchema = z.object({
 const countryCodes = [
     { value: "+91", label: "IN (+91)" },
     { value: "+1", label: "US (+1)" },
+    { value: "+1", label: "CA (+1)" },
     { value: "+44", label: "UK (+44)" },
     { value: "+61", label: "AU (+61)" },
+    { value: "+64", label: "NZ (+64)" },
+    { value: "+49", label: "DE (+49)" },
+    { value: "+33", label: "FR (+33)" },
+    { value: "+39", label: "IT (+39)" },
+    { value: "+34", label: "ES (+34)" },
+    { value: "+31", label: "NL (+31)" },
+    { value: "+46", label: "SE (+46)" },
+    { value: "+47", label: "NO (+47)" },
+    { value: "+45", label: "DK (+45)" },
+    { value: "+41", label: "CH (+41)" },
+    { value: "+65", label: "SG (+65)" },
     { value: "+81", label: "JP (+81)" },
+    { value: "+82", label: "KR (+82)" },
+    { value: "+971", label: "AE (+971)" },
+    { value: "+972", label: "IL (+972)" },
+    { value: "+62", label: "ID (+62)" },
+    { value: "+60", label: "MY (+60)" },
+    { value: "+63", label: "PH (+63)" },
+    { value: "+66", label: "TH (+66)" },
+    { value: "+84", label: "VN (+84)" },
+    { value: "+92", label: "PK (+92)" },
+    { value: "+880", label: "BD (+880)" },
+    { value: "+27", label: "ZA (+27)" },
+    { value: "+234", label: "NG (+234)" },
+    { value: "+254", label: "KE (+254)" },
+    { value: "+55", label: "BR (+55)" },
+    { value: "+52", label: "MX (+52)" },
+    { value: "+56", label: "CL (+56)" },
+    { value: "+54", label: "AR (+54)" },
+    { value: "+20", label: "EG (+20)" },
+    { value: "+90", label: "TR (+90)" },
+    { value: "+966", label: "SA (+966)" },
+    { value: "+974", label: "QA (+974)" },
+    { value: "+968", label: "OM (+968)" },
 ];
+
 
 export function ContactForm() {
   const { toast } = useToast();
@@ -147,7 +182,7 @@ export function ContactForm() {
                                 </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                    {countryCodes.map(c => <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>)}
+                                    {countryCodes.map((c, i) => <SelectItem key={`${c.value}-${c.label}-${i}`} value={c.value}>{c.label}</SelectItem>)}
                                 </SelectContent>
                             </Select>
                             <FormMessage />
