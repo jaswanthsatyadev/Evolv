@@ -46,7 +46,7 @@ export function HowItWorks() {
           <div className="inline-block rounded-lg bg-accent/10 px-3 py-1 text-sm font-medium text-accent">
             How It Works
           </div>
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline text-accent-foreground">
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline text-foreground">
             Our Streamlined Process
           </h2>
           <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
