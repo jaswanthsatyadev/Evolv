@@ -5,6 +5,9 @@ import { Toaster } from "@/components/ui/toaster"
 export const metadata: Metadata = {
   title: 'Evolv AI Agency',
   description: 'AI-powered solutions for your business.',
+  icons: {
+    icon: '/logo.png',
+  },
 };
 
 export default function RootLayout({
