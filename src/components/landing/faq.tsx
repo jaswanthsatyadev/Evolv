@@ -70,7 +70,7 @@ import {
                   <AccordionTrigger className="text-lg font-medium text-left hover:no-underline text-foreground">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-base text-muted-foreground">
+                  <AccordionContent className="text-base text-muted-foreground data-[state=open]:animate-fade-in">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>

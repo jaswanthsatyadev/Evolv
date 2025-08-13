@@ -30,7 +30,7 @@ export function Contact() {
           </div>
 
           <div className="lg:col-span-3 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-            <Card className="border-accent/20 shadow-xl">
+            <Card className="border-accent/20 shadow-xl transition-all duration-300 hover:shadow-accent/20 hover:scale-[1.02]">
                 <CardHeader>
                     <CardTitle className="text-2xl font-headline">Inquiry Form</CardTitle>
                     <CardDescription>Tell us a bit about your needs.</CardDescription>

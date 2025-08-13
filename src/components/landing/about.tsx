@@ -21,14 +21,14 @@ export function About() {
             </p>
           </div>
           <div className="flex items-center justify-center opacity-0 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-            <Card className="overflow-hidden rounded-xl shadow-2xl w-full max-w-md border-accent/20">
+            <Card className="overflow-hidden rounded-xl shadow-2xl w-full max-w-md border-accent/20 transition-all duration-300 hover:shadow-accent/20 hover:scale-105">
               <Image
                 src="https://images.unsplash.com/photo-1718241905696-cb34c2c07bed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxNnx8YXV0b21hdGlvbnxlbnwwfHx8fDE3NTUwNzMyNTZ8MA&ixlib=rb-4.1.0&q=80&w=1080"
                 width={600}
                 height={600}
                 alt="Founder Jaswanth Satya Dev"
                 data-ai-hint="founder portrait"
-                className="aspect-square w-full object-cover transition-transform duration-300 hover:scale-105"
+                className="aspect-square w-full object-cover"
               />
             </Card>
           </div>

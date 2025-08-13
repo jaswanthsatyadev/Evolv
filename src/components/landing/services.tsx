@@ -117,7 +117,7 @@ export function Services() {
                         Coming Soon
                       </Button>
                     ) : (
-                      <Button variant="outline" className="mt-6 w-full" onClick={() => handleKnowMoreClick(service)}>
+                      <Button variant="outline" className="mt-6 w-full transition-transform duration-300 hover:scale-105" onClick={() => handleKnowMoreClick(service)}>
                           Know More
                       </Button>
                     )}
