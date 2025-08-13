@@ -57,7 +57,7 @@ export async function getInquiries(): Promise<Inquiry[]> {
         return inquiryList;
     } catch(error) {
         console.error("Failed to fetch inquiries:", error);
-        return [];
+        throw new Error("Failed to fetch inquiries.");
     }
 }
 
