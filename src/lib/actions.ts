@@ -20,12 +20,6 @@ const inquirySchema = z.object({
 
 export type InquiryFormData = z.infer<typeof inquirySchema>;
 
-export type Inquiry = InquiryFormData & {
-  id: string;
-  submittedAt: string;
-};
-
-
 const formatService = (service: string) => {
     switch(service) {
         case 'ai-image': return 'AI Image Service';
@@ -88,17 +82,4 @@ export async function submitInquiry(data: InquiryFormData) {
     // This will be caught by the form's try-catch block
     throw new Error("Failed to submit inquiry due to a server error.");
   }
-}
-
-// The following functions are no longer active as we are not using a DB.
-// They can be removed or kept for future database integration.
-
-export async function getInquiries(): Promise<Inquiry[]> {
-  console.log("getInquiries is not active. Submissions are sent via email.");
-  return Promise.resolve([]);
-}
-
-export async function deleteInquiry(id: string) {
-    console.log("deleteInquiry is not active. Submissions are sent via email.");
-    return Promise.resolve({ success: true, message: "This action is not available." });
 }

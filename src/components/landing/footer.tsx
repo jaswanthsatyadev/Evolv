@@ -42,13 +42,6 @@ export function Footer() {
           >
             FAQs
           </Link>
-           <Link
-            href="/admin"
-            className="text-sm hover:text-accent underline-offset-4 text-muted-foreground transition-colors"
-            prefetch={false}
-          >
-            Admin
-          </Link>
         </nav>
       </div>
     </footer>
