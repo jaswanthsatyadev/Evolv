@@ -3,7 +3,7 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Cpu, Image, SearchCode, Star, ArrowRight, FireExtinguisher, Flame, Bot } from "lucide-react";
+import { Cpu, Image, SearchCode, Star, ArrowRight, Flame, Bot, Code, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
 import React from "react";
@@ -76,6 +76,32 @@ const servicesData = [
     }
   },
   {
+    id: "custom-websites",
+    icon: <Code className="h-10 w-10 text-muted-foreground" />,
+    title: "Custom Websites",
+    description: "We build custom, scalable websites at very low prices.",
+    details: ["Coming Soon"],
+    popular: false,
+    detailedInfo: {
+        shortDescription: "Coming soon: Custom, scalable websites built to your specifications.",
+        benefits: [],
+        whatWeCanDo: "This service is currently under development. Stay tuned for updates!"
+    }
+  },
+  {
+    id: "support-agents",
+    icon: <Phone className="h-10 w-10 text-muted-foreground" />,
+    title: "Customer Support Agents",
+    description: "Completely replace your support team with our AI support agents that pick your customer calls and talk, available 24/7.",
+    details: ["Coming Soon"],
+    popular: false,
+    detailedInfo: {
+        shortDescription: "Coming soon: AI-powered support agents to handle customer calls 24/7.",
+        benefits: [],
+        whatWeCanDo: "This service is currently under development. Stay tuned for updates!"
+    }
+  },
+  {
     id: "targeted-marketing",
     icon: <Cpu className="h-10 w-10 text-muted-foreground" />,
     title: "Targeted Marketing Solutions",
@@ -114,12 +140,12 @@ export function Services() {
               We offer a range of specialized AI services designed to give your business a competitive edge.
             </p>
           </div>
-          <div className="mx-auto grid items-stretch gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-6xl lg:grid-cols-2 xl:grid-cols-4">
+          <div className="mx-auto grid items-stretch gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-6xl lg:grid-cols-3">
             {servicesData.map((service, index) => (
               <div
                 key={service.id}
                 className="h-full opacity-0 animate-fade-in-up"
-                style={{ animationDelay: `${0.2 * (index + 1)}s` }}
+                style={{ animationDelay: `${0.15 * (index + 1)}s` }}
               >
                 <Card className="h-full flex flex-col border-accent/20 transition-all duration-300 hover:shadow-accent/10 hover:shadow-lg hover:-translate-y-2 hover:border-accent">
                   <CardHeader className="pb-4 relative">
@@ -138,13 +164,13 @@ export function Services() {
                         <Badge key={i} variant="secondary" className="bg-muted/50 text-muted-foreground">{detail}</Badge>
                       ))}
                     </div>
-                    {service.id.includes('marketing') || service.id.includes('chatbots') ? (
-                      <Button variant="outline" className="mt-6 w-full" disabled>
-                        Coming Soon
-                      </Button>
-                    ) : (
+                    {service.id === 'ai-image' || service.id === 'web-scraping' ? (
                       <Button variant="outline" className="mt-6 w-full transition-transform duration-300 hover:scale-105" onClick={() => handleKnowMoreClick(service)}>
                           Know More
+                      </Button>
+                    ) : (
+                       <Button variant="outline" className="mt-6 w-full" disabled>
+                        Coming Soon
                       </Button>
                     )}
                   </CardContent>
@@ -240,3 +266,5 @@ export function Services() {
     </>
   );
 }
+
+    
