@@ -1,7 +1,7 @@
 
 "use client";
 import { useState, useEffect } from 'react';
-import { getInquiries, Inquiry } from '@/lib/actions';
+import { getInquiries, deleteInquiry, Inquiry } from '@/lib/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -9,6 +9,18 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Logo } from '@/components/icons';
 import { useToast } from '@/hooks/use-toast';
+import { Trash2 } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -58,6 +70,25 @@ export default function AdminPage() {
       setPassword('');
     }
   };
+
+  const handleDelete = async (submittedAt: string) => {
+    try {
+      await deleteInquiry(submittedAt);
+      setInquiries(inquiries.filter(inq => inq.submittedAt !== submittedAt));
+      toast({
+        title: "Inquiry Deleted",
+        description: "The inquiry has been successfully removed.",
+      });
+    } catch (error) {
+      console.error("Failed to delete inquiry", error);
+       toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Could not delete the inquiry.",
+      });
+    }
+  };
+
 
   const formatService = (service: string) => {
       switch(service) {
@@ -124,6 +155,7 @@ export default function AdminPage() {
                     <TableHead>Email</TableHead>
                     <TableHead>Service</TableHead>
                     <TableHead>Details</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -137,7 +169,7 @@ export default function AdminPage() {
                         </TableCell>
                         <TableCell className="font-medium">{inquiry.name}</TableCell>
                         <TableCell>{inquiry.company}</TableCell>
-                        <TableCell>{`${inquiry.countryCode}${inquiry.whatsapp}`}</TableCell>
+                        <TableCell>{inquiry.whatsapp}</TableCell>
                         <TableCell>{inquiry.email || 'N/A'}</TableCell>
                         <TableCell>
                           <Badge variant={inquiry.service === 'custom' ? 'default' : 'secondary'}>
@@ -147,11 +179,38 @@ export default function AdminPage() {
                         <TableCell className="max-w-xs truncate">
                             {inquiry.service === 'custom' ? inquiry.customService : inquiry.message || 'No message'}
                         </TableCell>
+                        <TableCell className="text-right">
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                               <Button variant="ghost" size="icon" className="text-destructive/80 hover:text-destructive hover:bg-destructive/10">
+                                <Trash2 className="h-4 w-4" />
+                                <span className="sr-only">Delete</span>
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  This action cannot be undone. This will permanently delete the inquiry.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => handleDelete(inquiry.submittedAt)}
+                                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                >
+                                  Delete
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </TableCell>
                       </TableRow>
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={7} className="text-center h-24">
+                      <TableCell colSpan={8} className="text-center h-24">
                         No inquiries yet.
                       </TableCell>
                     </TableRow>

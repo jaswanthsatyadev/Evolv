@@ -47,7 +47,7 @@ async function saveSubmissions(submissions: Inquiry[]) {
         // but don't throw an exception. This prevents the user-facing
         // form from showing an error.
         console.error("CRITICAL: Failed to save submission to submissions.json.", error);
-        console.error("Submission data:", JSON.stringify(submissions[0], null, 2));
+        console.error("Submission data:", JSON.stringify(submissions.length > 0 ? submissions[0] : 'no submissions to show', null, 2));
         // We will not re-throw the error, allowing the user to see a success message.
     }
 }
@@ -82,4 +82,16 @@ export async function submitInquiry(data: unknown) {
 
 export async function getInquiries(): Promise<Inquiry[]> {
     return await getSubmissions();
+}
+
+export async function deleteInquiry(submittedAt: string) {
+  const submissions = await getSubmissions();
+  const updatedSubmissions = submissions.filter(s => s.submittedAt !== submittedAt);
+
+  if (submissions.length === updatedSubmissions.length) {
+    throw new Error("Inquiry not found for deletion.");
+  }
+  
+  await saveSubmissions(updatedSubmissions);
+  return { success: true, message: "Inquiry deleted." };
 }
