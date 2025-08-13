@@ -1,9 +1,16 @@
+
+"use client";
+
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ContactForm } from "./contact-form";
 import { Mail } from "lucide-react";
 import { Whatsapp } from "../icons";
+import { Button } from "@/components/ui/button";
 
 export function Contact() {
+  const [isEmailVisible, setIsEmailVisible] = useState(false);
+
   return (
     <section id="contact" className="w-full py-12 md:py-24 lg:py-32 bg-[#121212]">
       <div className="container mx-auto px-4 md:px-6">
@@ -25,7 +32,13 @@ export function Contact() {
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-accent" />
-                <a href="mailto:jaswanthjuluru55@gmail.com" className="text-lg text-muted-foreground hover:text-accent-foreground transition-colors">jaswanthjuluru55@gmail.com</a>
+                {isEmailVisible ? (
+                  <span className="text-lg text-muted-foreground">jaswanthjuluru55@gmail.com</span>
+                ) : (
+                  <Button variant="link" className="p-0 h-auto text-lg text-muted-foreground hover:text-accent-foreground" onClick={() => setIsEmailVisible(true)}>
+                    Connect on Gmail
+                  </Button>
+                )}
               </div>
             </div>
           </div>
