@@ -174,8 +174,12 @@ export function Services() {
                       ))}
                     </div>
                     {service.id === 'ai-image' || service.id === 'web-scraping' ? (
-                      <Button variant="outline" className="mt-6 w-full transition-transform duration-300 hover:scale-105" onClick={() => handleKnowMoreClick(service)}>
+                      <Button 
+                          className="mt-6 w-full group font-bold bg-accent text-accent-foreground hover:bg-accent/90 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-accent/40 animate-shadow-pulse" 
+                          onClick={() => handleKnowMoreClick(service)}
+                      >
                           Know More
+                          <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                       </Button>
                     ) : (
                        <Button variant="outline" className="mt-6 w-full" disabled>

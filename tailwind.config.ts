@@ -95,12 +95,21 @@ export default {
             transform: 'translateY(0)',
           },
         },
+        'shadow-pulse': {
+          '0%, 100%': {
+            boxShadow: '0 0 15px hsl(var(--accent) / 0.2)',
+          },
+          '50%': {
+            boxShadow: '0 0 30px hsl(var(--accent) / 0.4)',
+          },
+        }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'fade-in': 'fade-in 0.6s ease-out forwards',
         'fade-in-up': 'fade-in-up 0.6s ease-out forwards',
+        'shadow-pulse': 'shadow-pulse 2.5s infinite',
       },
     },
   },
